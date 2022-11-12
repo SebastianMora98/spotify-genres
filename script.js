@@ -1,7 +1,29 @@
 $(document).ready(function () {
-  $("#example").DataTable({
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const page = urlParams.get("page");
+  console.log(page);
+
+  let table = $("#example").DataTable({
     pagingType: "full_numbers",
     scrollX: true,
+    drawCallback: function () {
+      $(
+        ".paginate_button.next:not(.disabled)",
+        this.api().table().container()
+      ).on("click", function () {
+        window.location.href = "/index.html?page=" + (parseInt(page) + 1);
+      });
+    },
+    initComplete: function () {
+      this.api()
+        .page(parseInt(page) - 1)
+        .draw("page");
+    },
+  });
+
+  table.on("buttons-action", function (e, buttonApi, dataTable, node, config) {
+    console.log("Button " + buttonApi.text() + " was activated");
   });
 });
 /*
