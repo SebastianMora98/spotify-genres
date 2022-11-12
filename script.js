@@ -4,6 +4,18 @@ $(document).ready(function () {
   const page = urlParams.get("page");
   console.log(page);
 
+  if (page == null) {
+    window.location.href = "/index.html?page=1";
+  }
+
+  if (isNaN(page)) {
+    window.location.href = "/index.html?page=1";
+  }
+
+  if (page < 1) {
+    window.location.href = "/index.html?page=1";
+  }
+
   let table = $("#example").DataTable({
     pagingType: "full_numbers",
     scrollX: true,
